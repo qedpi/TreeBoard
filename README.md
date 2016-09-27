@@ -4,9 +4,9 @@ The primary use of whiteboords is experimentation and explanation, processes tha
 - commits
   + saving the board state, allowing future access of components
 - branching
-  + testing different cases, different approaches, tangents
+  + testing different cases, different approaches, tangents & digressions
 - merging
-  + using result of one path in another, lemmas, references
+  + using result of one path in another: lemmas, showing steps, explanations 
 
 We may also include MathQuill to allow easy LaTeX entry.
 
