@@ -1,6 +1,6 @@
 #Whiteboard Version-Control
 
-The primary use of whiteboords is experimentation and explanation, processes that can both benefit from features in version control, such as:
+The primary use of whiteboords is experimentation and explanation, processes that can both benefit from ideas in version-control, such as:
 - commits
   + saving the board state, allowing future access of components
 - branching
