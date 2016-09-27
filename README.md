@@ -11,7 +11,8 @@ The primary use of whiteboords is experimentation and explanation, processes tha
 We may also include MathQuill to allow easy LaTeX entry.
 
 
-
+---
+---
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
