@@ -1,3 +1,18 @@
+#Whiteboard Version-Control
+
+The primary use of whiteboords is experimentation and explanation, processes that can both benefit from features in version control, such as:
+- commits
+  + saving the board state, allowing future access of components
+- branching
+  + testing different cases, different approaches, tangents
+- merging
+  + using result of one path in another, lemmas, references
+
+We may also include MathQuill to allow easy LaTeX entry.
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.  
