@@ -28,6 +28,27 @@ class ColorPoint extends Point {
     }
 }
 
+
+var renderedStrokes = [];
+
+var undoStrokes = [];
+
+function undo() {
+    if (renderedStrokes.length > 0)
+        undoStrokes.push(renderedStrokes.pop());
+}
+
+function redo() {
+    if (undoStrokes.length > 0)
+        renderedStrokes.push(undoStrokes.pop());
+}
+
+var stack = [];
+stack.push(2);       // stack is now [2]
+stack.push(5);       // stack is now [2, 5]
+var i = stack.pop(); // stack is now [2]
+
+
 class App extends Component {
     componentDidMount() {
         this.updateCanvas();
