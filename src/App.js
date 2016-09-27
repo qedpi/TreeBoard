@@ -5,6 +5,29 @@ import './App.css';
 
 //Canvas
 
+const default_radius = 10;
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.r = default_radius;
+    }
+    toString() {
+        return '(' + this.x + ', ' + this.y + ')';
+    }
+}
+
+class ColorPoint extends Point {
+    constructor(x, y, color) {
+        super(x, y);
+        this.color = color;
+    }
+    toString() {
+        return super.toString() + ' in ' + this.color;
+    }
+}
+
 class App extends Component {
     componentDidMount() {
         this.updateCanvas();
