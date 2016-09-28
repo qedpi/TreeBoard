@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 //import logo from './logo.svg';
 import './App.css';
 
-import {Drawable, Point, Circle} from './Drawable.js';
+import {Drawable, Point, Circle, Pair, Stroke} from './Drawable.js';
 
 /*  todo: module import not working, new Circle -> Uncaught TypeError: _Drawable.Circle is not a constructor
 import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doesn't work
@@ -14,6 +14,8 @@ import Drawable from './Drawable.js';
 
 //Canvas
 
+const sample_rate = 1;                              // 1 in n points stored in a stroke, for efficiency
+const sample_min_dist = 5;                          // todo: find a good value
 const default_radius = 10;
 const default_color = 'black';
 const draw_modes = new Set(['Line', 'Circle']);
@@ -22,6 +24,8 @@ let draw_mode = 'Line';
 
 let renderedStrokes = [];
 let undoStrokes = [];
+
+let strokeBuffer = [];      // list of points
 
 class App extends Component {
     componentDidMount() {
@@ -37,7 +41,29 @@ class App extends Component {
 
         let dragging = false;
 
+        const infPair = new Pair(-1000, -1000);
+
         context.lineWidth = radius * 2;
+
+        const pairDist = (P, Q) => {
+            let dx = P.x - Q.x, dy = P.y - Q.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        };
+
+
+        const samplePoints = (Pts) => {
+            let sampled = [];
+            let referencePt = infPair;
+            Pts.forEach( (Pt, i, _) => {            // take only every nth point, and if its far enough away from previous point
+                if (i % sample_rate === 0) {
+                    if (pairDist(Pt, referencePt) >= sample_min_dist) {
+                        sampled.push(Pt);
+                        referencePt = Pt;
+                    }
+                }
+            });
+            return sampled;
+        };
 
         const clearCanvas = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,13 +71,16 @@ class App extends Component {
 
         const drawPath = e => {
             if (dragging) {
+                let x = e.offsetX, y = e.offsetY;
                 //draw line from previous to current point
                 // offset is relative to object, whereas clientX -> window
-                context.lineTo(e.offsetX, e.offsetY);
+                context.lineTo(x, y);
                 context.stroke();
 
                 context.beginPath(); // move to new point
-                context.moveTo(e.offsetX, e.offsetY);
+                context.moveTo(x, y);
+
+                strokeBuffer.push(new Pair(x, y));
             }
         };
 
@@ -122,6 +151,10 @@ class App extends Component {
             canvas.addEventListener('mouseup', () => {
                 dragging = false;
                 context.beginPath();
+                renderedStrokes.push(new Stroke(strokeBuffer));     // add stroke to rendered
+                console.log('before sample', (new Stroke(strokeBuffer)).toString());
+                console.log('after sample', (new Stroke(samplePoints(strokeBuffer))).toString());
+                strokeBuffer.length = 0;                            // reset points stored
             });
             canvas.addEventListener('mousemove', drawPath);
         } else if (draw_mode === 'Circle') {

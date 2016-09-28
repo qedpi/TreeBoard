@@ -66,7 +66,7 @@ export class Stroke extends Drawable {
     }
 
     toString() {
-        let details = this.pairs.join;
+        let details = this.pairs.join();
         return super.toString() + details;
     }
 }
