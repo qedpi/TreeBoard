@@ -139,10 +139,16 @@ class App extends Component {
             renderStack();
         };
 
+        const redoStroke = () => {
+            redo();
+            drawStackCircle(renderedStrokes[renderedStrokes.length - 1]);      // todo: if i render the whole stack, would react optimize it away?
+        };
+
         const undoButton = document.getElementById('undo');
         const redoButton = document.getElementById('redo');
 
         undoButton.addEventListener('click', undoStroke);
+        redoButton.addEventListener('click', redoStroke);
 
         // todo: refactor into map notation if too many cases
         if (draw_mode === 'Line') {
