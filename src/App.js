@@ -9,6 +9,9 @@ import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doe
 
 const default_radius = 10;
 const default_color = 'black';
+const draw_modes = new Set(['Line', 'Circle']);
+
+let draw_mode = 'Circle';
 
 let renderedStrokes = [];
 let undoStrokes = [];
@@ -43,6 +46,7 @@ class App extends Component {
         const drawPath = e => {
             if (dragging) {
                 //draw line from previous to current point
+                // offset is relative to object, whereas clientX -> window
                 context.lineTo(e.offsetX, e.offsetY);
                 context.stroke();
 
@@ -53,23 +57,30 @@ class App extends Component {
 
 
         const drawCircle = e => {
-            context.arc(e.offsetX, e.offsetY, radius * 2, 0, Math.PI * 2);
+            context.beginPath();
+            context.arc(e.offsetX, e.offsetY, radius * 10, 0, Math.PI * 2);
             context.fill();
         };
 
-        canvas.addEventListener('mousedown', () => dragging = true);
-        canvas.addEventListener('mouseup', () => {
-            dragging = false;
-            context.beginPath();
-        });
-        canvas.addEventListener('mousemove', drawPath);
-
+        // todo: refactor into map notation if too many cases
+        if (draw_mode === 'Line') {
+            canvas.addEventListener('mousedown', () => dragging = true);
+            canvas.addEventListener('mouseup', () => {
+                dragging = false;
+                context.beginPath();
+            });
+            canvas.addEventListener('mousemove', drawPath);
+        } else if (draw_mode === 'Circle') {
+            console.log('circle mode');
+            canvas.addEventListener('mousedown', drawCircle);
+        }
     }
 
     render() {
         const default_margin = 10;
         let width = window.innerWidth - default_margin * 2;
         let height = window.innerHeight - default_margin * 2;
+
         return (
             <canvas id="canvas" width={width} height={height}>Hello</canvas>
         );
