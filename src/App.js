@@ -147,8 +147,9 @@ class App extends Component {
 
     render() {
         const default_margin = 10;
+        const navbar_height = 40;       // todo: fix this guestimate
         let width = window.innerWidth - default_margin * 2;
-        let height = window.innerHeight - default_margin * 2;
+        let height = window.innerHeight - default_margin * 2 - navbar_height;
 
         return (
             <canvas id="canvas" width={width} height={height}>Hello</canvas>
