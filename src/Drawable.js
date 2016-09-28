@@ -46,8 +46,6 @@ class Circle extends Point {
 }
 
 
-let x = new Circle(62, 62, 10, 'black');
-x.toString();
 /*
  class ColorPoint extends Point {
  constructor(x, y, color) {
@@ -59,3 +57,5 @@ x.toString();
  }
  }
  */
+
+export default {Drawable, Point, Circle};

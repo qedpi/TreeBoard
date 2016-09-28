@@ -1,8 +1,57 @@
 import React, {Component} from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doesn't work
 
+/*  todo: module import not working, new Circle -> Uncaught TypeError: _Drawable.Circle is not a constructor
+import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doesn't work
+import Point from './Drawable.js';
+import Drawable from './Drawable.js';
+*/
+
+class Drawable {
+    constructor() {
+        // metadata
+        this.timeCreated = new Date().getTime();    // utc time in seconds, exclude .getTime for proper time object
+        this.user = 0;                              // todo: set by session id?
+        this.session = 0;                           // todo: set by session id?
+        this.branch = 0;                            // primary, todo: set by interaction
+    }
+
+    toString() {
+        return `session ${this.session}, user ${this.user}, branch ${this.branch}, at ${this.timeCreated}, `;
+    }
+}
+
+class Point extends Drawable {
+    constructor(x, y) {
+        super();
+
+        // spatial
+        this.x = x;
+        this.y = y;
+    }
+
+    toString() {
+        //let detatils = '(' + this.x + ', ' + this.y + ')' + ' ' + this.color;
+        let details = `(${this.x}, ${this.y}), `;
+        return super.toString() + details;
+    }
+}
+
+class Circle extends Point {
+    constructor(x, y, r, color) {
+        super(x, y);
+
+        // aesthetics
+        this.r = r;                 // todo: allow using default radius, color
+        this.color = color;
+    }
+
+    toString() {
+        let details = `r: ${this.r}, color: ${this.color}, `;
+        return super.toString() + details;
+    }
+}
 
 
 //Canvas
@@ -43,6 +92,10 @@ class App extends Component {
 
         context.lineWidth = radius * 2;
 
+        const clearCanvas = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        };
+
         const drawPath = e => {
             if (dragging) {
                 //draw line from previous to current point
@@ -55,12 +108,20 @@ class App extends Component {
             }
         };
 
-
         const drawCircle = e => {
             context.beginPath();
             context.arc(e.offsetX, e.offsetY, radius * 10, 0, Math.PI * 2);
             context.fill();
         };
+
+        // todo: generalize into general push
+        const pushCircle = e => {
+            renderedStrokes.push(new Circle(e.offsetX, e.offsetY, radius * 10, 'black'));
+            console.log(renderedStrokes);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawCircle(e);
+        };
+
 
         // todo: refactor into map notation if too many cases
         if (draw_mode === 'Line') {
@@ -72,7 +133,7 @@ class App extends Component {
             canvas.addEventListener('mousemove', drawPath);
         } else if (draw_mode === 'Circle') {
             console.log('circle mode');
-            canvas.addEventListener('mousedown', drawCircle);
+            canvas.addEventListener('mousedown', pushCircle);
         }
     }
 
