@@ -7,17 +7,41 @@ import './App.css';
 
 const default_radius = 10;
 
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.r = default_radius;
+
+class Drawable {
+    constructor() {
+        //metadata
+        this.timeCreated = new Date().getTime();    // utc time in seconds, exclude .getTime for proper time object
+        this.user = 1;                              // todo: set by session id?
+        this.session = 1;                           // todo: set by session id?
+        this.branch = 0;                            // primary, todo: set by interaction
     }
+
     toString() {
-        return '(' + this.x + ', ' + this.y + ')';
+        return `session: ${this.session}, user: ${this.user}, branch: ${this.branch}, at ${this.timeCreated}`;
     }
 }
 
+class Point extends Drawable {
+    constructor(x, y) {
+        super.constructor();
+
+        //spatial
+        this.x = x;
+        this.y = y;
+
+        //aesthetics
+        this.r = default_radius;
+        this.color = 'black';
+    }
+    toString() {
+        //let detatils = '(' + this.x + ', ' + this.y + ')' + ' ' + this.color;
+        let details = `(${this.x}, ${this.y}) ${this.color}`;
+        return super.toString() + details;
+    }
+}
+
+/*
 class ColorPoint extends Point {
     constructor(x, y, color) {
         super(x, y);
@@ -27,10 +51,9 @@ class ColorPoint extends Point {
         return super.toString() + ' in ' + this.color;
     }
 }
-
+*/
 
 var renderedStrokes = [];
-
 var undoStrokes = [];
 
 function undo() {
