@@ -19,7 +19,11 @@ const sample_rate = 1;                              // 1 in n points stored in a
 const sample_min_dist = 1;                          // todo: find a good value, also sample_rate might not be useful, if dist can always be used instead
 const default_radius = 10;
 const default_color = 'black';
-const draw_modes = new Set(['Line', 'Circle']);
+const background_color = 'antiquewhite';
+const line_default_radius = 4;
+const eraser_default_radius = 80;
+
+const draw_modes = new Set(['Line', 'Circle', 'Erase']);
 
 let draw_mode = 'Line';
 
@@ -170,6 +174,7 @@ class App extends Component {
 
         const lineButton = document.getElementById('line-mode');
         const circleButton = document.getElementById('circle-mode');
+        const eraseButton = document.getElementById('erase-mode');
 
         const undoButton = document.getElementById('undo');
         const redoButton = document.getElementById('redo');
@@ -183,12 +188,25 @@ class App extends Component {
             draw_mode = 'Circle';
             this.updateCanvas()
         });
+        eraseButton.addEventListener('click', () => {
+            draw_mode = 'Erase';
+            this.updateCanvas()
+        });
         undoButton.addEventListener('click', undoStroke);
         redoButton.addEventListener('click', redoStroke);
         trashButton.addEventListener('click', trashAll);
 
         // todo: refactor into map notation if too many cases
-        if (draw_mode === 'Line') {
+        if (draw_mode === 'Line' || draw_mode === 'Erase') {
+
+            if (draw_mode === 'Erase') {
+                context.strokeStyle = background_color;
+                context.lineWidth = eraser_default_radius;
+            } else {
+                context.strokeStyle = default_color;
+                context.lineWidth = line_default_radius;
+            }
+
             canvas.addEventListener('mousedown', () => dragging = true);
             canvas.addEventListener('mouseup', () => {
                 dragging = false;
