@@ -35,9 +35,23 @@ let undoStrokes = [];
 
 let strokeBuffer = [];      // list of points
 
+const infPair = new Pair(-1000, -1000);
+
+
 
 class App extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            name: 'hello',
+            pass: 'byebye',
+        }
+    }
+
     componentDidMount() {
+        console.log(this.state.name);       // todo remove check
         this.updateCanvas();
     }
 
@@ -49,8 +63,6 @@ class App extends Component {
         const context = canvas.getContext('2d');
 
         let dragging = false;
-
-        const infPair = new Pair(-1000, -1000);
 
         context.lineWidth = radius * 2;
 
@@ -174,11 +186,6 @@ class App extends Component {
             renderedStrokes.length = 0;
             undoStrokes.length = 0;
             clearCanvas();
-        };
-
-        const removeListeners = () => {                                 // todo: dont use, refreshes whole canvas
-            let new_canvas = canvas.cloneNode(true);
-            canvas.parentNode.replaceChild(new_canvas, canvas);
         };
 
         const lineButton = document.getElementById('line-mode');
