@@ -3,10 +3,15 @@
     margin: 0;
 }
 
-.navbar {
+#canvas:hover {
+    cursor: crosshair;
 }
 
+.navbar {
+    margin-bottom: 0;
+}
 
 #ex1Slider .slider-selection {
-  background: #BABABA;
+    background: #BABABA;
 }
+
