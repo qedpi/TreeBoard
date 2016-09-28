@@ -65,16 +65,6 @@ let draw_mode = 'Circle';
 let renderedStrokes = [];
 let undoStrokes = [];
 
-function undo() {
-    if (renderedStrokes.length > 0)
-        undoStrokes.push(renderedStrokes.pop());
-}
-
-function redo() {
-    if (undoStrokes.length > 0)
-        renderedStrokes.push(undoStrokes.pop());
-}
-
 
 class App extends Component {
     componentDidMount() {
@@ -123,13 +113,36 @@ class App extends Component {
         // todo: generalize into general push
         const pushCircle = e => {
             renderedStrokes.push(new Circle(e.offsetX, e.offsetY, radius * 10, 'black'));
-            console.log(renderedStrokes);
+            console.log(renderedStrokes.map(x => x.toString()));
             drawCircle(e);
+            undoStrokes.length = 0;  // clears redo buffer
+        };
+
+        const undo = () => {
+            if (renderedStrokes.length > 0)
+                console.log('undo');
+                undoStrokes.push(renderedStrokes.pop());
+        };
+
+        const redo = () => {
+            if (undoStrokes.length > 0)
+                renderedStrokes.push(undoStrokes.pop());
         };
 
         const renderStack = e => {
-              renderedStrokes.map(drawStackCircle);
+            renderedStrokes.map(drawStackCircle);
         };
+
+        const undoStroke = () => {
+            clearCanvas();
+            undo();
+            renderStack();
+        };
+
+        const undoButton = document.getElementById('undo');
+        const redoButton = document.getElementById('redo');
+
+        undoButton.addEventListener('click', undoStroke);
 
         // todo: refactor into map notation if too many cases
         if (draw_mode === 'Line') {
