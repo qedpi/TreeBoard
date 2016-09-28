@@ -15,7 +15,8 @@ import Drawable from './Drawable.js';
 //Canvas
 
 const sample_rate = 1;                              // 1 in n points stored in a stroke, for efficiency
-const sample_min_dist = 5;                          // todo: find a good value
+                                                    // 5 is still noticeable
+const sample_min_dist = 1;                          // todo: find a good value, also sample_rate might not be useful, if dist can always be used instead
 const default_radius = 10;
 const default_color = 'black';
 const draw_modes = new Set(['Line', 'Circle']);
@@ -167,10 +168,21 @@ class App extends Component {
             clearCanvas();
         };
 
+        const lineButton = document.getElementById('line-mode');
+        const circleButton = document.getElementById('circle-mode');
+
         const undoButton = document.getElementById('undo');
         const redoButton = document.getElementById('redo');
         const trashButton = document.getElementById('trash');
 
+        lineButton.addEventListener('click', () => {
+            draw_mode = 'Line';
+            this.updateCanvas()
+        });
+        circleButton.addEventListener('click', () => {
+            draw_mode = 'Circle';
+            this.updateCanvas()
+        });
         undoButton.addEventListener('click', undoStroke);
         redoButton.addEventListener('click', redoStroke);
         trashButton.addEventListener('click', trashAll);
