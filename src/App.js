@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 //import logo from './logo.svg';
 import './App.css';
 
+
+
 /*  todo: module import not working, new Circle -> Uncaught TypeError: _Drawable.Circle is not a constructor
 import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doesn't work
 import Point from './Drawable.js';
@@ -116,11 +118,12 @@ class App extends Component {
             console.log(renderedStrokes.map(x => x.toString()));
             drawCircle(e);
             undoStrokes.length = 0;  // clears redo buffer
+
+            undoButton.className = 'undo action-possible';
         };
 
         const undo = () => {
             if (renderedStrokes.length > 0)
-                console.log('undo');
                 undoStrokes.push(renderedStrokes.pop());
         };
 
@@ -129,7 +132,7 @@ class App extends Component {
                 renderedStrokes.push(undoStrokes.pop());
         };
 
-        const renderStack = e => {
+        const renderStack = () => {
             renderedStrokes.map(drawStackCircle);
         };
 

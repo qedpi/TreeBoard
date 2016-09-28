@@ -19,6 +19,10 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="./index.css">
+
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -38,8 +42,8 @@
             <a class="navbar-brand" href="#">Whiteboard</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a id="undo"><i class="fa fa-undo" aria-hidden="true"></i> Undo</a></li>
-            <li><a id="redo"><i class="fa fa-repeat" aria-hidden="true"></i> Redo</a></li>
+            <li><a id="undo" class="action-impossible"><i class="fa fa-undo" aria-hidden="true"></i></a></li>
+            <li><a id="redo" class="action-impossible"><i class="fa fa-repeat" aria-hidden="true"></i></a></li>
         </ul>
     </div>
 </nav>
