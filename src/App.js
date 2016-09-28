@@ -96,7 +96,7 @@ class App extends Component {
             context.fill();
         };
 
-        // todo: generalize into general push
+        // todo: generalize into push drawable
         const pushCircle = e => {
             renderedStrokes.push(new Circle(e.offsetX, e.offsetY, radius * 10, 'black'));
             console.log(renderedStrokes.map(x => x.toString()));
@@ -116,8 +116,31 @@ class App extends Component {
                 renderedStrokes.push(undoStrokes.pop());
         };
 
+        const drawStackLine = S => {
+            let points = S.pairs;
+            context.beginPath();
+
+            points.map( P => {
+                let x = P.x, y = P.y;
+                context.lineTo(x, y);
+                context.stroke();
+
+                context.beginPath(); // move to new point
+                context.moveTo(x, y);
+            });
+            context.beginPath();    // ends path
+        };
+
+
+
         const renderStack = () => {
-            renderedStrokes.map(drawStackCircle);
+            renderedStrokes.map(S => {
+                if (S.type === 'Circle') {
+                    drawStackCircle(S)
+                } else {
+                    drawStackLine(S)
+                }
+            });
         };
 
         const undoStroke = () => {
@@ -128,7 +151,14 @@ class App extends Component {
 
         const redoStroke = () => {
             redo();
-            drawStackCircle(renderedStrokes[renderedStrokes.length - 1]);      // todo: if i render the whole stack, would react optimize it away?
+            let last = renderedStrokes[renderedStrokes.length - 1];
+            let type = last.type;
+
+            if (type == 'Circle') {
+                drawStackCircle(last);      // todo: if i render the whole stack, would react optimize it away?
+            } else {
+                drawStackLine(last);
+            }
         };
 
         const trashAll = () => {
@@ -151,9 +181,11 @@ class App extends Component {
             canvas.addEventListener('mouseup', () => {
                 dragging = false;
                 context.beginPath();
-                renderedStrokes.push(new Stroke(strokeBuffer));     // add stroke to rendered
-                console.log('before sample', (new Stroke(strokeBuffer)).toString());
-                console.log('after sample', (new Stroke(samplePoints(strokeBuffer))).toString());
+                renderedStrokes.push(new Stroke(samplePoints(strokeBuffer)));     // add stroke to rendered
+                //console.log('before sample', (new Stroke(strokeBuffer)).toString());
+                //console.log('after sample', (new Stroke(samplePoints(strokeBuffer))).toString());
+                console.log(renderedStrokes.map(x => x.toString()));
+
                 strokeBuffer.length = 0;                            // reset points stored
             });
             canvas.addEventListener('mousemove', drawPath);

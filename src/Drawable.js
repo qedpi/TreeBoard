@@ -37,10 +37,11 @@ export class Circle extends Point {
         // aesthetics
         this.r = r;                 // todo: allow using default radius, color
         this.color = color;
+        this.type = 'Circle'
     }
 
     toString() {
-        let details = `r: ${this.r}, color: ${this.color}, `;
+        let details = `type: ${this.type}, r: ${this.r}, color: ${this.color}, `;
         return super.toString() + details;
     }
 }
@@ -63,10 +64,11 @@ export class Stroke extends Drawable {
 
         // spatial
         this.pairs = Pairs;
+        this.type = 'Stroke'
     }
 
     toString() {
-        let details = this.pairs.join();
+        let details = `type: ${this.type}, ` + this.pairs.join();
         return super.toString() + details;
     }
 }
