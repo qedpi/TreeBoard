@@ -249,12 +249,13 @@ class App extends Component {
 
         const tool_ids = ['line-mode', 'circle-mode', 'erase-mode', 'undo', 'redo', 'trash'];
         const tool_icons = ['pencil', 'circle-o', 'eraser', 'undo', 'repeat', 'trash-o'];
+        const tool_tips = ['free draw', 'circles', 'free erase', 'undo last', 'redo last', 'clear all, no undos'];
         /*const tool_listeners = [() => draw_mode = 'Line', () => draw_mode = 'Circle', () => draw_mode = 'Erase',
                                 undoStroke, redoStroke, trashAll];*/
-        const tools = zip([tool_ids, tool_icons/*, tool_listeners*/]);
+        const tools = zip([tool_ids, tool_icons, tool_tips /*, tool_listeners*/]);
 
         let tool_LIs = tools.map( (tool, i) => {
-            return <li><a key={'tool_' + i} id={tool[0]}><i className={'fa fa-' + tool[1]}>|</i></a></li>;
+            return <li><a key={'tool_' + i} id={tool[0]} title={tool[2]}><i className={'fa fa-' + tool[1]}>|</i></a></li>;
         });
 
         console.log(tool_LIs);
@@ -264,7 +265,9 @@ class App extends Component {
                 <div className="container-fluid">
                     <div className="navbar-header">
                         <a className="navbar-brand">Whiteboard</a></div>
-                    <ul className="nav navbar-nav">{tool_LIs}</ul></div></nav>);
+                    <ul className="nav navbar-nav">{tool_LIs}
+                        <li><a onClick={() => alert('hello')} id="trasaeih" className="action-possible"><i className="fa fa-trash-o"></i></a></li>
+                    </ul></div></nav>);
 
         return (
             <div>
