@@ -11,8 +11,10 @@ import Drawable from './Drawable.js';
 */
 
 
+// Tools
+const zip = rows => rows[0].map((_,c)=>rows.map(row=>row[c]));
 
-//Canvas
+// Canvas
 
 const default_radius = 10;
 const default_color = 'black';
@@ -32,6 +34,7 @@ let renderedStrokes = [];
 let undoStrokes = [];
 
 let strokeBuffer = [];      // list of points
+
 
 class App extends Component {
     componentDidMount() {
@@ -160,7 +163,7 @@ class App extends Component {
             let last = renderedStrokes[renderedStrokes.length - 1];
             let type = last.type;
 
-            if (type == 'Circle') {
+            if (type === 'Circle') {
                 drawStackCircle(last);      // todo: if i render the whole stack, would react optimize it away?
             } else {
                 drawStackLine(last);
@@ -237,8 +240,29 @@ class App extends Component {
         let width = window.innerWidth - default_margin * 2;
         let height = window.innerHeight - default_margin * 2 - navbar_height;
 
+        const tool_ids = ['line-mode', 'circle-mode', 'erase-mode', 'undo', 'redo', 'trash'];
+        const tool_icons = ['pencil', 'circle-o', 'eraser', 'undo', 'repeat', 'trash-o'];
+        /*const tool_listeners = [() => draw_mode = 'Line', () => draw_mode = 'Circle', () => draw_mode = 'Erase',
+                                undoStroke, redoStroke, trashAll];*/
+        const tools = zip([tool_ids, tool_icons/*, tool_listeners*/]);
+
+        let tool_LIs = tools.map( (tool, i) => {
+            return <li><a key={'tool_' + i} id={tool[0]}><i className={'fa fa-' + tool[1]}>|</i></a></li>;
+        });
+
+        console.log(tool_LIs);
+
+        let navbar =
+            (<nav className="navbar navbar-inverse">
+                <div className="container-fluid">
+                    <div className="navbar-header">
+                        <a className="navbar-brand">Whiteboard</a></div>
+                    <ul className="nav navbar-nav">{tool_LIs}</ul></div></nav>);
+
         return (
-            <canvas id="canvas" width={width} height={height}>Hello</canvas>
+            <div>
+                {navbar}
+                <canvas id="canvas" width={width} height={height}>Your browser does not support Canvas</canvas></div>
         );
     }
 }
