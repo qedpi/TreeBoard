@@ -114,14 +114,22 @@ class App extends Component {
             context.fill();
         };
 
+        const drawStackCircle = (C) => {
+            context.beginPath();
+            context.arc(C.x, C.y, radius * 10, 0, Math.PI * 2);
+            context.fill();
+        };
+
         // todo: generalize into general push
         const pushCircle = e => {
             renderedStrokes.push(new Circle(e.offsetX, e.offsetY, radius * 10, 'black'));
             console.log(renderedStrokes);
-            context.clearRect(0, 0, canvas.width, canvas.height);
             drawCircle(e);
         };
 
+        const renderStack = e => {
+              renderedStrokes.map(drawStackCircle);
+        };
 
         // todo: refactor into map notation if too many cases
         if (draw_mode === 'Line') {
