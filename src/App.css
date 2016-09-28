@@ -9,9 +9,25 @@
 
 .navbar {
     margin-bottom: 0;
+    border-radius: 0;
+}
+
+.navbar li a:hover {
+    cursor: pointer;
+}
+
+.navbar .navbar-brand:hover {
+    cursor: pointer;
 }
 
 #ex1Slider .slider-selection {
     background: #BABABA;
 }
 
+.action-possible {
+    color: white;
+}
+
+.action-impossible {
+    color: red;
+}

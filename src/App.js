@@ -255,7 +255,7 @@ class App extends Component {
         const tools = zip([tool_ids, tool_icons, tool_tips /*, tool_listeners*/]);
 
         let tool_LIs = tools.map( (tool, i) => {
-            return <li><a key={'tool_' + i} id={tool[0]} title={tool[2]}><i className={'fa fa-' + tool[1]}>|</i></a></li>;
+            return <li><a key={'tool_' + i} id={tool[0]} title={tool[2]}><i className={'fa fa-' + tool[1]}></i></a></li>;
         });
 
         console.log(tool_LIs);
@@ -276,5 +276,7 @@ class App extends Component {
         );
     }
 }
+
+let x = 1;
 
 export default App;
