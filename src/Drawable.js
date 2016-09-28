@@ -1,6 +1,6 @@
 /* Drawable objects on canvas */
 
-class Drawable {
+export class Drawable {
     constructor() {
         // metadata
         this.timeCreated = new Date().getTime();    // utc time in seconds, exclude .getTime for proper time object
@@ -14,7 +14,7 @@ class Drawable {
     }
 }
 
-class Point extends Drawable {
+export class Point extends Drawable {
     constructor(x, y) {
         super();
 
@@ -30,7 +30,7 @@ class Point extends Drawable {
     }
 }
 
-class Circle extends Point {
+export class Circle extends Point {
     constructor(x, y, r, color) {
         super(x, y);
 
@@ -41,6 +41,32 @@ class Circle extends Point {
 
     toString() {
         let details = `r: ${this.r}, color: ${this.color}, `;
+        return super.toString() + details;
+    }
+}
+
+
+export class Pair {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    toString() {
+        return `(${this.x}, ${this.y})`;
+    }
+}
+
+export class Stroke extends Drawable {
+    constructor(Pairs) {
+        super();
+
+        // spatial
+        this.pairs = Pairs;
+    }
+
+    toString() {
+        let details = this.pairs.join;
         return super.toString() + details;
     }
 }
@@ -58,4 +84,5 @@ class Circle extends Point {
  }
  */
 
-export default {Drawable, Point, Circle};
+//export default {Drawable, Point, Circle};
+

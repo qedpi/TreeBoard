@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 //import logo from './logo.svg';
 import './App.css';
 
-
+import {Drawable, Point, Circle} from './Drawable.js';
 
 /*  todo: module import not working, new Circle -> Uncaught TypeError: _Drawable.Circle is not a constructor
 import Circle from './Drawable.js';       // todo: {Drawable, Point, Circle} doesn't work
@@ -10,50 +10,6 @@ import Point from './Drawable.js';
 import Drawable from './Drawable.js';
 */
 
-class Drawable {
-    constructor() {
-        // metadata
-        this.timeCreated = new Date().getTime();    // utc time in seconds, exclude .getTime for proper time object
-        this.user = 0;                              // todo: set by session id?
-        this.session = 0;                           // todo: set by session id?
-        this.branch = 0;                            // primary, todo: set by interaction
-    }
-
-    toString() {
-        return `session ${this.session}, user ${this.user}, branch ${this.branch}, at ${this.timeCreated}, `;
-    }
-}
-
-class Point extends Drawable {
-    constructor(x, y) {
-        super();
-
-        // spatial
-        this.x = x;
-        this.y = y;
-    }
-
-    toString() {
-        //let detatils = '(' + this.x + ', ' + this.y + ')' + ' ' + this.color;
-        let details = `(${this.x}, ${this.y}), `;
-        return super.toString() + details;
-    }
-}
-
-class Circle extends Point {
-    constructor(x, y, r, color) {
-        super(x, y);
-
-        // aesthetics
-        this.r = r;                 // todo: allow using default radius, color
-        this.color = color;
-    }
-
-    toString() {
-        let details = `r: ${this.r}, color: ${this.color}, `;
-        return super.toString() + details;
-    }
-}
 
 
 //Canvas
@@ -62,11 +18,10 @@ const default_radius = 10;
 const default_color = 'black';
 const draw_modes = new Set(['Line', 'Circle']);
 
-let draw_mode = 'Circle';
+let draw_mode = 'Line';
 
 let renderedStrokes = [];
 let undoStrokes = [];
-
 
 class App extends Component {
     componentDidMount() {
